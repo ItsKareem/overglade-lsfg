@@ -22,30 +22,30 @@ func _physics_process(delta: float) -> void:
 			if move_direction.x > 0:
 				if last_direction != "right":
 					anim.play("turn_right")
-					await anim.animation_finished
 					last_direction = "right"
+					await anim.animation_finished
 				anim.play("move_right")
 				last_direction = "right"
 			else:
 				if last_direction != "left":
 					anim.play("turn_left")
-					await anim.animation_finished
 					last_direction = "left"
+					await anim.animation_finished
 				anim.play("move_left")
 				last_direction = "left"
 		else:
 			if move_direction.y > 0:
 				if last_direction != "down":
 					anim.play("turn_down")
-					await anim.animation_finished
 					last_direction = "down"
+					await anim.animation_finished
 				anim.play("move_down")
 				last_direction = "down"
 			else:
 				if last_direction != "up":
 					anim.play("turn_up")
-					await anim.animation_finished
 					last_direction = "up"
+					await anim.animation_finished
 				anim.play("move_up")
 				last_direction = "up"
 	else:
