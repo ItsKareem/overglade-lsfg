@@ -1,11 +1,11 @@
-[gd_scene load_steps=34 format=3 uid="uid://4tpbsym7r1nv"]
+[gd_scene load_steps=33 format=3 uid="uid://4tpbsym7r1nv"]
 
 [ext_resource type="Script" uid="uid://cadf3qkh5lhqg" path="res://movement.gd" id="1_i3pqv"]
 [ext_resource type="Texture2D" uid="uid://do3mf7ipq3fyf" path="res://Player-Sheet.png" id="2_hqtel"]
 [ext_resource type="Script" uid="uid://d3a44gat6opaa" path="res://playerSprite.gd" id="3_sweqy"]
-[ext_resource type="PackedScene" uid="uid://cbo1r0rpqevfr" path="res://sword.tscn" id="4_hqtel"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_2hs0m"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hqtel"]
+size = Vector2(19, 5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1jxqw"]
 atlas = ExtResource("2_hqtel")
@@ -279,32 +279,27 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="Player" type="Node2D"]
-
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("sword")]
+[node name="Player" type="CharacterBody2D"]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(0, -9)
 script = ExtResource("1_i3pqv")
-sword = NodePath("../weapon/Sword")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(0.5, 1)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 7)
 scale = Vector2(0.8, 0.8)
-shape = SubResource("CircleShape2D_2hs0m")
+shape = SubResource("RectangleShape2D_hqtel")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_nvl01")
-animation = &"attack_up"
+animation = &"attack_down"
 autoplay = "idle_down"
 script = ExtResource("3_sweqy")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("")
 
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-zoom = Vector2(4, 4)
-
-[node name="AnimationTree" type="AnimationTree" parent="CharacterBody2D"]
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("")
 anim_player = NodePath("../AnimationPlayer")
-
-[node name="weapon" type="Node2D" parent="."]
-
-[node name="Sword" parent="weapon" instance=ExtResource("4_hqtel")]

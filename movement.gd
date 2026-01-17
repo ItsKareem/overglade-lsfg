@@ -6,30 +6,13 @@ extends CharacterBody2D
 var last_direction := "down"
 var is_attacking := false
 
-func attack(last_direction):
-	if is_attacking:
-		return
 
-	is_attacking = true
-	
-	anim.play("attack_" + last_direction)
-	sword.start_attack(last_direction)
-	# duration of the stab / attack
-	var stab_time := 0.2
-	await get_tree().create_timer(stab_time).timeout
-
-	is_attacking = false
-	
 
 func _physics_process(delta: float) -> void:
 
 	var input_vector := Vector2(
 		Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 		)
-
-	if Input.is_action_just_pressed("attack"):
-		attack(last_direction)
-
 
 	var move_direction := input_vector.normalized()
 
