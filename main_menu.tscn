@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=3 uid="uid://cu6qmu27cevi8"]
+
+[ext_resource type="Texture2D" uid="uid://47i1ho4wa1pj" path="res://images/MainMenu-Overglade.PNG" id="1_06t4h"]
+[ext_resource type="Script" uid="uid://b120p1emyg2wl" path="res://main_menu.gd" id="1_dy7ct"]
+[ext_resource type="Texture2D" uid="uid://dj60urg0xyost" path="res://images/GameLogo.PNG" id="2_8qtwp"]
+[ext_resource type="Texture2D" uid="uid://d04u5nmv7lyoa" path="res://images/StartButton.PNG" id="2_jix8l"]
+[ext_resource type="Texture2D" uid="uid://c5nvqii8fsur4" path="res://images/StartButton-Pressed.PNG" id="3_glbon"]
+[ext_resource type="Texture2D" uid="uid://8fats02lwyrv" path="res://images/StartButton-Hover.PNG" id="4_nlkkf"]
+[ext_resource type="Texture2D" uid="uid://cqps8edq1kom2" path="res://images/QuitButton.PNG" id="6_dy7ct"]
+[ext_resource type="Texture2D" uid="uid://ydlv11830u15" path="res://images/QuitButton-Pressed.PNG" id="7_0o4t1"]
+[ext_resource type="Texture2D" uid="uid://qpuk00wbr61o" path="res://images/QuitButton-Hover.PNG" id="8_0k4wn"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -256.0
+offset_bottom = -176.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dy7ct")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 256.0
+offset_bottom = 176.0
+texture = ExtResource("1_06t4h")
+expand_mode = 1
+
+[node name="GameLogo" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 2732.0
+offset_bottom = 2048.0
+scale = Vector2(0.09, 0.09)
+texture = ExtResource("2_8qtwp")
+expand_mode = 1
+
+[node name="StartButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 115.0
+offset_right = 803.0
+offset_bottom = 372.0
+scale = Vector2(0.11, 0.11)
+texture_normal = ExtResource("2_jix8l")
+texture_pressed = ExtResource("3_glbon")
+texture_hover = ExtResource("4_nlkkf")
+
+[node name="QuitButton" type="TextureButton" parent="."]
+offset_left = 70.0
+offset_top = 137.0
+offset_right = 849.0
+offset_bottom = 394.0
+scale = Vector2(0.11, 0.11)
+texture_normal = ExtResource("6_dy7ct")
+texture_pressed = ExtResource("7_0o4t1")
+texture_hover = ExtResource("8_0k4wn")
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
