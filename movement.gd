@@ -1,11 +1,16 @@
 extends CharacterBody2D
 
+class_name Player
+
+signal healthChanged
+
 @onready var anim := $AnimatedSprite2D
 @export var speed := 100.0
 @export var sword: Node2D
+@export var maxHealth = 3
+@onready var currentHealth: int = maxHealth
 var last_direction := "down"
 var is_attacking := false
-
 
 
 func _physics_process(delta: float) -> void:
@@ -54,3 +59,11 @@ func _physics_process(delta: float) -> void:
 	else:
 		# No movement → Play idle animation based on last direction
 		anim.play("idle_" + last_direction)
+
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	if area.name == "hitbox":
+		currentHealth -= 1
+		if currentHealth < 0:
+			currentHealth = maxHealth
+		healthChanged.emit(currentHealth)

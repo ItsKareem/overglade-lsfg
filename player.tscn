@@ -1,11 +1,11 @@
-[gd_scene load_steps=33 format=3 uid="uid://4tpbsym7r1nv"]
+[gd_scene load_steps=34 format=3 uid="uid://4tpbsym7r1nv"]
 
 [ext_resource type="Script" uid="uid://cadf3qkh5lhqg" path="res://movement.gd" id="1_i3pqv"]
 [ext_resource type="Texture2D" uid="uid://do3mf7ipq3fyf" path="res://Player-Sheet.png" id="2_hqtel"]
 [ext_resource type="Script" uid="uid://d3a44gat6opaa" path="res://playerSprite.gd" id="3_sweqy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hqtel"]
-size = Vector2(19, 5)
+size = Vector2(18.75, 5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1jxqw"]
 atlas = ExtResource("2_hqtel")
@@ -279,6 +279,9 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
+size = Vector2(16.25, 17.5)
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 y_sort_enabled = true
@@ -303,3 +306,15 @@ root_node = NodePath("")
 [node name="AnimationTree" type="AnimationTree" parent="."]
 root_node = NodePath("")
 anim_player = NodePath("../AnimationPlayer")
+
+[node name="hurtbox" type="Area2D" parent="."]
+position = Vector2(0.5, 7)
+scale = Vector2(0.8, 0.8)
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(7.15256e-07, -7.5)
+scale = Vector2(0.999999, 0.999999)
+shape = SubResource("RectangleShape2D_i3pqv")
+
+[connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered"]
