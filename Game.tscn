@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dlhtmslg856h5"]
+[gd_scene load_steps=12 format=3 uid="uid://dlhtmslg856h5"]
 
 [ext_resource type="Script" uid="uid://cfay342fo37hn" path="res://world.gd" id="1_3mrqo"]
 [ext_resource type="Texture2D" uid="uid://bftmhrfb4frf7" path="res://grass_tileset.png" id="2_joorw"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://c48vvr15ogbq" path="res://camera_2d.gd" id="5_yhmtn"]
 [ext_resource type="PackedScene" uid="uid://bjmh3pbp41ucv" path="res://minko.tscn" id="6_gwjdr"]
 [ext_resource type="PackedScene" uid="uid://dmv7vc5vhget" path="res://hearts_container.tscn" id="7_lvtmh"]
+[ext_resource type="PackedScene" uid="uid://bp40n44qf76bp" path="res://mimo.tscn" id="8_joorw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c6xj6"]
 texture = ExtResource("2_joorw")
@@ -533,7 +534,7 @@ texture = ExtResource("3_2vekm")
 5:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, 8, 7, 8, 7, 0, -7, 0)
 
 [sub_resource type="TileSet" id="TileSet_kem5a"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 5
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Grass"
 terrain_set_0/terrain_0/color = Color(0.501961, 0.345098, 1, 1)
@@ -617,17 +618,45 @@ layer_0/tile_data = PackedInt32Array(393210, 393216, 1, 327674, 393216, 1, 26213
 
 [node name="minko" parent="." instance=ExtResource("6_gwjdr")]
 position = Vector2(416, 64)
+collision_mask = 6
 
 [node name="minko2" parent="." instance=ExtResource("6_gwjdr")]
 position = Vector2(592, 128)
+collision_mask = 6
 patrol_right = 0
 patrol_down = -3
 
 [node name="minko3" parent="." instance=ExtResource("6_gwjdr")]
 position = Vector2(688, 48)
+collision_mask = 6
 patrol_right = 0
 patrol_down = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HeartsContainer" parent="CanvasLayer" instance=ExtResource("7_lvtmh")]
+
+[node name="momi" parent="." instance=ExtResource("8_joorw")]
+position = Vector2(832, 160)
+collision_mask = 6
+patrol_right = 9
+
+[node name="momi2" parent="." instance=ExtResource("8_joorw")]
+position = Vector2(960, 216)
+collision_mask = 6
+patrol_right = -9
+
+[node name="momi3" parent="." instance=ExtResource("8_joorw")]
+position = Vector2(832, 272)
+collision_mask = 6
+patrol_right = 9
+
+[node name="momi4" parent="." instance=ExtResource("8_joorw")]
+position = Vector2(416, 304)
+collision_mask = 6
+patrol_right = 1
+
+[node name="minko4" parent="." instance=ExtResource("6_gwjdr")]
+position = Vector2(696, 272)
+speed = 50
+patrol_right = 3
