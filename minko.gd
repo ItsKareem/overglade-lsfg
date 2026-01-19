@@ -7,11 +7,13 @@ extends CharacterBody2D
 
 @onready var animations := $AnimatedSprite2D
 
+var health: float = 3.0
 var startPosition
 var endPosition
 var moveDirection
 
 func _ready() -> void:
+	add_to_group("enemy")
 	startPosition = position
 	endPosition = startPosition + Vector2(patrol_right * 16, patrol_down * 16)
 
@@ -42,3 +44,10 @@ func _physics_process(delta: float) -> void:
 	updateVelocity()
 	updateAnimation()
 	move_and_slide()
+
+func take_damage(weapon_damage: float):
+	$Effects.play("take_damage")
+	health -= weapon_damage
+	
+	if health <= 0.0:
+		queue_free()
