@@ -5,12 +5,20 @@ class_name Player
 signal healthChanged
 
 @onready var anim := $AnimatedSprite2D
+@onready var effects:= $Effects
+@onready var hurtTimer := $hurtTimer
 @export var speed := 100.0
 @export var sword: Node2D
 @export var maxHealth = 3
 @onready var currentHealth: int = maxHealth
+@export var knockbackPower: int = 600
 var last_direction := "down"
 var is_attacking := false
+var isHurt: bool = false
+var enemyCollisions = []
+
+func _ready() -> void:
+	effects.play("RESET")
 
 
 func _physics_process(delta: float) -> void:
@@ -59,11 +67,33 @@ func _physics_process(delta: float) -> void:
 	else:
 		# No movement → Play idle animation based on last direction
 		anim.play("idle_" + last_direction)
+	
+	if !isHurt:
+		for enemyArea in enemyCollisions:
+			hurtByEnemy(enemyArea)
 
+func hurtByEnemy(area):
+	currentHealth -= 1
+	if currentHealth < 0:
+		currentHealth = maxHealth
+	healthChanged.emit(currentHealth)
+	isHurt = true
+	knockback(area.get_parent().velocity)
+	effects.play("hurtBlink")
+	hurtTimer.start()
+	await hurtTimer.timeout
+	effects.play("RESET")
+	isHurt = false
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if area.name == "hitbox":
-		currentHealth -= 1
-		if currentHealth < 0:
-			currentHealth = maxHealth
-		healthChanged.emit(currentHealth)
+		enemyCollisions.append(area)
+
+func knockback(enemyVelocity: Vector2):
+	var knockbackDirection = (enemyVelocity - velocity).normalized() * knockbackPower
+	velocity = knockbackDirection
+	move_and_slide()
+
+
+func _on_hurtbox_area_exited(area: Area2D) -> void:
+	enemyCollisions.erase(area)
