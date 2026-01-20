@@ -8,8 +8,10 @@ signal healthChanged
 @onready var hurtTimer := $hurtTimer
 @onready var hurtbox := $hurtbox
 @onready var sword := $sword
+@onready var interact := $Interact
 @onready var sword_anim := $sword/AnimationPlayer
-
+@onready var parent = get_parent()
+@onready var heartsContainer = $"../CanvasLayer/HeartsContainer"
 @export var speed := 100.0
 @export var slash_time := 0.2
 @export var sword_return_time := 0.5
@@ -17,8 +19,11 @@ signal healthChanged
 @export var maxHealth := 3
 @export var knockbackPower := 600
 
+var canRestart = false
+var canInteract: Array[CollisionObject2D] = []
 var currentHealth := maxHealth
 var canSlash := true
+var is_interacting := false
 var is_attacking := false
 var isHurt := false
 var last_direction := "down"
@@ -28,10 +33,11 @@ const sword_slash_preload = preload("res://sword_slash.tscn")
 func _ready() -> void:
 	effects.play("RESET")
 	sword.visible = false
+	canRestart = false
 
 func _physics_process(delta: float) -> void:
 
-	if is_attacking:
+	if is_attacking or is_interacting:
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
@@ -73,8 +79,10 @@ func _physics_process(delta: float) -> void:
 
 func hurtByEnemy(area):
 	currentHealth -= 1
-	if currentHealth < 0:
-		currentHealth = maxHealth
+	if currentHealth <= 0:
+		game_over()
+		effects.play("death")
+		return
 	healthChanged.emit(currentHealth)
 	isHurt = true
 	knockback(area.get_parent().velocity)
@@ -171,3 +179,66 @@ func update_sword_draw_order():
 			move_child(sword, get_child_count() - 1) # draw on top
 		_:
 			move_child(sword, 0) # draw behind
+
+func update_interact_transform():
+	match last_direction:
+		"right":
+			interact.position = Vector2(14, 3)
+
+		"down":
+			sword.position = Vector2(0.5, 15)
+
+		"left":
+			sword.position = Vector2(-12, 3)
+
+		"up":
+			sword.position = Vector2(0.5, -1)
+
+
+func _on_interact_body_entered(body: Node2D) -> void:
+	if body.has_method("interact"):
+		canInteract.push_back(body)
+
+
+func _on_interact_body_exited(body: Node2D) -> void:
+	if canInteract.has(body):
+		canInteract.erase(body)
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action_pressed("interact") and !is_interacting:
+		is_interacting = true
+		anim.play("attack_" + last_direction)
+		for i in canInteract:
+			i.interact(parent)
+		await anim.animation_finished
+		is_interacting = false
+
+func add_heart_container() -> void:
+	maxHealth += 1
+	currentHealth = maxHealth
+	heartsContainer.setMaxHearts(1)
+	heartsContainer.updateHearts(currentHealth)
+	healthChanged.emit(currentHealth)
+
+func game_over():
+	canRestart = true
+	effects.play("death")
+	await effects.animation_finished
+	
+	set_physics_process(false)
+	set_process(false)
+
+	var fade := $"../GameOver/ScreenFade"
+	var ui := $"../GameOver/GameOverUI"
+
+	fade.visible = true
+	fade.modulate= 255
+
+	var tween := get_tree().create_tween()
+	tween.tween_property(fade, "modulate:a", 1.0, 0.4)
+	await tween.finished
+
+	# Small pause for impact
+	await get_tree().create_timer(0.2).timeout
+
+	ui.visible = true

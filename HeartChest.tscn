@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3 uid="uid://cq3m2eq35f4n8"]
+
+[ext_resource type="Script" uid="uid://yyu7ptf203m0" path="res://heart_chest.gd" id="1_4v5pe"]
+[ext_resource type="Texture2D" uid="uid://ordhxvhj8jpl" path="res://HeartChest.png" id="1_qqcns"]
+[ext_resource type="Texture2D" uid="uid://cs77lor1btsau" path="res://HeartContainer.png" id="2_3js7n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4v5pe"]
+atlas = ExtResource("1_qqcns")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3js7n"]
+atlas = ExtResource("1_qqcns")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j6vhb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4v5pe")
+}],
+"loop": true,
+"name": &"closed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3js7n")
+}],
+"loop": true,
+"name": &"open",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fc3py"]
+size = Vector2(16, 10)
+
+[node name="HeartChest" type="StaticBody2D"]
+z_index = 1
+y_sort_enabled = true
+collision_layer = 9
+collision_mask = 0
+script = ExtResource("1_4v5pe")
+item = ExtResource("2_3js7n")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_j6vhb")
+animation = &"open"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_fc3py")
+
+[node name="StartMarker" type="Marker2D" parent="."]
+
+[node name="EndMarker" type="Marker2D" parent="."]
+position = Vector2(0, -16)

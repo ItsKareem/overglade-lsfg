@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dlhtmslg856h5"]
+[gd_scene load_steps=16 format=3 uid="uid://dlhtmslg856h5"]
 
 [ext_resource type="Script" uid="uid://cfay342fo37hn" path="res://world.gd" id="1_3mrqo"]
 [ext_resource type="Texture2D" uid="uid://bftmhrfb4frf7" path="res://grass_tileset.png" id="2_joorw"]
@@ -8,6 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://bjmh3pbp41ucv" path="res://minko.tscn" id="6_gwjdr"]
 [ext_resource type="PackedScene" uid="uid://dmv7vc5vhget" path="res://hearts_container.tscn" id="7_lvtmh"]
 [ext_resource type="PackedScene" uid="uid://bp40n44qf76bp" path="res://mimo.tscn" id="8_joorw"]
+[ext_resource type="PackedScene" uid="uid://cq3m2eq35f4n8" path="res://HeartChest.tscn" id="9_2vekm"]
+[ext_resource type="Script" uid="uid://bus5mk0ixoqip" path="res://game_over.gd" id="10_gwjdr"]
+[ext_resource type="Texture2D" uid="uid://24ctvet21bji" path="res://GameOverText.png" id="10_yx171"]
+[ext_resource type="Texture2D" uid="uid://caur6ius3b84l" path="res://Restart.png" id="11_lvtmh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c6xj6"]
 texture = ExtResource("2_joorw")
@@ -660,3 +664,52 @@ patrol_right = 1
 position = Vector2(696, 272)
 speed = 50
 patrol_right = 3
+
+[node name="HeartChest" parent="." instance=ExtResource("9_2vekm")]
+position = Vector2(104, 248)
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+script = ExtResource("10_gwjdr")
+
+[node name="ScreenFade" type="ColorRect" parent="GameOver"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.02, 0.016, 0.012, 1)
+
+[node name="PlayerOverlay" type="Node2D" parent="GameOver"]
+z_index = 2
+
+[node name="GameOverUI" type="Control" parent="GameOver"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureButton" type="TextureButton" parent="GameOver/GameOverUI"]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 100.0
+offset_right = 144.0
+offset_bottom = 116.0
+texture_normal = ExtResource("11_lvtmh")
+texture_pressed = ExtResource("11_lvtmh")
+texture_hover = ExtResource("11_lvtmh")
+
+[node name="TextureRect" type="TextureRect" parent="GameOver/GameOverUI"]
+layout_mode = 0
+offset_left = 98.5
+offset_top = 62.0
+offset_right = 157.5
+offset_bottom = 102.0
+texture = ExtResource("10_yx171")
+stretch_mode = 2
+
+[connection signal="pressed" from="GameOver/GameOverUI/TextureButton" to="GameOver" method="_on_texture_button_pressed"]
