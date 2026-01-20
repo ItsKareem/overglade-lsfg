@@ -1,11 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bdxws3h4522vj"]
+[gd_scene load_steps=7 format=3 uid="uid://cnp3hl8s57qcv"]
 
-[ext_resource type="Script" uid="uid://o6ow112voieg" path="res://sword_slash.gd" id="1_cl6ki"]
-[ext_resource type="Texture2D" uid="uid://uxbxmoxs35j2" path="res://slash_sheet.png" id="2_p54ft"]
+[ext_resource type="Script" uid="uid://o6ow112voieg" path="res://sword_slash.gd" id="1_syksy"]
+[ext_resource type="Texture2D" uid="uid://uxbxmoxs35j2" path="res://slash_sheet.png" id="2_44d5j"]
 
 [sub_resource type="Animation" id="Animation_20rp4"]
 resource_name = "slash"
-length = 0.5
+length = 0.65
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -14,8 +14,8 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(-2, -2, -2, -2, -2),
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4]
 }
@@ -26,10 +26,22 @@ tracks/1/path = NodePath(".:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.6, 0.65),
+"transitions": PackedFloat32Array(0.5, 2, 2, 0.5),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Area2D/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_rmkiw"]
@@ -58,6 +70,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Area2D/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_63eb8"]
 _data = {
@@ -65,12 +89,15 @@ _data = {
 &"slash": SubResource("Animation_20rp4")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fo0hx"]
+size = Vector2(9, 8)
+
 [node name="sword_slash" type="Node2D"]
-script = ExtResource("1_cl6ki")
+script = ExtResource("1_syksy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0)
-texture = ExtResource("2_p54ft")
+texture = ExtResource("2_44d5j")
 offset = Vector2(-8, 0)
 hframes = 5
 vframes = 2
@@ -80,4 +107,11 @@ libraries = {
 &"": SubResource("AnimationLibrary_63eb8")
 }
 
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-5, 0)
+shape = SubResource("RectangleShape2D_fo0hx")
+
 [connection signal="animation_finished" from="Sprite2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

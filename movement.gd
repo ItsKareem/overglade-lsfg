@@ -27,6 +27,7 @@ const sword_slash_preload = preload("res://sword_slash.tscn")
 
 func _ready() -> void:
 	effects.play("RESET")
+	sword.visible = false
 
 func _physics_process(delta: float) -> void:
 
@@ -59,10 +60,11 @@ func _physics_process(delta: float) -> void:
 	else:
 		anim.play("idle_" + last_direction)
 
-	
-	if Input.is_action_pressed("attack") and canSlash:
-		$sword/AnimationPlayer.speed_scale = $sword/AnimationPlayer.get_animation("slash").length / slash_time
-		$sword/AnimationPlayer.play("slash")
+	update_sword_draw_order()
+
+	if Input.is_action_just_pressed("attack") and canSlash:
+		$sword/AnimationPlayer.speed_scale = $sword/AnimationPlayer.get_animation("slash_" + last_direction).length / slash_time
+		$sword/AnimationPlayer.play("slash_" + last_direction)
 		start_attack()
 	if !isHurt:
 		for area in hurtbox.get_overlapping_areas():
@@ -89,12 +91,12 @@ func knockback(enemyVelocity: Vector2):
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if anim_name == "slash":
-		$sword/AnimationPlayer.speed_scale = $sword/AnimationPlayer.get_animation("slash").length / sword_return_time
-		$sword/AnimationPlayer.play("sword_return")
+	if anim_name == "slash_" + last_direction:
+		is_attacking = false
+		$sword/AnimationPlayer.speed_scale = $sword/AnimationPlayer.get_animation("slash_" + last_direction).length / sword_return_time
+		$sword/AnimationPlayer.play("sword_return_" + last_direction)
 	else:
 		canSlash = true
-		is_attacking = false
 
 func get_facing_vector() -> Vector2:
 	match last_direction:
@@ -109,22 +111,25 @@ func get_facing_vector() -> Vector2:
 	return Vector2.DOWN
 
 
-#func spawn_slash():
-#	var slash = sword_slash_preload.instantiate()
+func spawn_slash():
+	var slash = sword_slash_preload.instantiate()
+	var spawn = $SlashMarker
 
-#	var dir := get_facing_vector()
-#	var distance := 12
-
-#	slash.position = (dir * distance).round()
-#	slash.rotation = dir.angle() + PI / 2
-#	slash.weapon_damage = weapon_damage
-
-#	# Flip if needed
-#	if dir == Vector2.LEFT:
-#	else:
-#		slash.get_node("Sprite2D").flip_v = false
-
-#	get_parent().add_child(slash)
+	match last_direction:
+		"right":
+			slash.global_position = spawn.global_position + Vector2(24,0)
+			slash.rotation = 0
+		"down":
+			slash.global_position = spawn.global_position + Vector2(0,24)
+			slash.rotation = PI / 2
+		"left":
+			slash.global_position = spawn.global_position + Vector2(-24,0)
+			slash.rotation = PI
+		"up":
+			slash.global_position = spawn.global_position + Vector2(0,-24)
+			slash.rotation = -PI / 2
+		
+	get_parent().add_child(slash)
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
@@ -135,4 +140,34 @@ func start_attack():
 	canSlash = false
 	is_attacking = true
 	velocity = Vector2.ZERO
+	update_sword_transform()
+	update_sword_draw_order()
 	anim.play("attack_" + last_direction)
+	spawn_slash()
+
+func update_sword_transform():
+	match last_direction:
+		"right":
+			sword.rotation = 0
+			sword.position = Vector2(9, 5)
+
+		"down":
+			sword.rotation = PI / 2
+			sword.position = Vector2(-3, 7)
+
+		"left":
+			sword.rotation = PI
+			sword.position = Vector2(-6, 5)
+
+		"up":
+			sword.rotation = -PI / 2
+			sword.position = Vector2(5, 0)
+
+func update_sword_draw_order():
+	var sprite = anim
+
+	match last_direction:
+		"down":
+			move_child(sword, get_child_count() - 1) # draw on top
+		_:
+			move_child(sword, 0) # draw behind
