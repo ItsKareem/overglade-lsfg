@@ -604,13 +604,14 @@ layer_0/tile_data = PackedInt32Array(65587, 196609, 2, 52, 196609, 2, 50, 196609
 position = Vector2(128, 88)
 speed = 80.0
 
-[node name="Camera2D" type="Camera2D" parent="Player" node_paths=PackedStringArray("tilemap")]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("tilemap")]
+position = Vector2(128, 88)
 limit_left = 0
 limit_top = 0
 limit_right = 1024
 limit_bottom = 352
 script = ExtResource("5_yhmtn")
-tilemap = NodePath("../../Ground")
+tilemap = NodePath("../Ground")
 
 [node name="Shade" type="TileMap" parent="."]
 modulate = Color(1, 1, 1, 0.301961)
