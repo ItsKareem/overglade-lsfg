@@ -1,7 +1,8 @@
-[gd_scene load_steps=26 format=3 uid="uid://bp40n44qf76bp"]
+[gd_scene load_steps=28 format=3 uid="uid://bp40n44qf76bp"]
 
 [ext_resource type="Script" uid="uid://gxipu6k48h42" path="res://mimo.gd" id="1_rsufd"]
 [ext_resource type="Texture2D" uid="uid://d15d0rwe3jh25" path="res://images/Mimo-Sheet.png" id="2_jvfn8"]
+[ext_resource type="Texture2D" uid="uid://b65vc1xnf345t" path="res://Particle.png" id="3_jvfn8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6bvqi"]
 atlas = ExtResource("2_jvfn8")
@@ -173,6 +174,12 @@ _data = {
 &"take_damage": SubResource("Animation_hdpbr")
 }
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6bvqi"]
+particle_flag_disable_z = true
+initial_velocity_min = 100.0
+initial_velocity_max = 120.0
+gravity = Vector3(0, 0, 0)
+
 [node name="mimo" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
 collision_mask = 2
@@ -216,6 +223,16 @@ one_way_collision_margin = 0.0
 libraries = {
 &"": SubResource("AnimationLibrary_xk5tb")
 }
+
+[node name="DamageParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 10
+texture = ExtResource("3_jvfn8")
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+randomness = 0.2
+process_material = SubResource("ParticleProcessMaterial_6bvqi")
 
 [connection signal="body_entered" from="DetectPlayer" to="." method="_on_detect_player_body_entered"]
 [connection signal="body_exited" from="DetectPlayer" to="." method="_on_detect_player_body_exited"]

@@ -564,8 +564,7 @@ _data = {
 &"sword_return_up": SubResource("Animation_n7ghd")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sweqy"]
-size = Vector2(20.7012, 8.29126)
+[sub_resource type="CircleShape2D" id="CircleShape2D_sweqy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1jxqw"]
 atlas = ExtResource("2_hqtel")
@@ -923,7 +922,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hqtel"]
-radius = 8.0
+radius = 16.0
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
@@ -956,7 +955,7 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="sword/Area2D"]
 position = Vector2(-8, 8)
 rotation = -0.785398
-shape = SubResource("RectangleShape2D_sweqy")
+shape = SubResource("CircleShape2D_sweqy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 clip_children = 2

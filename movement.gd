@@ -130,6 +130,8 @@ func get_facing_vector() -> Vector2:
 
 func spawn_slash():
 	var slash = sword_slash_preload.instantiate()
+	slash.player = self
+
 	var spawn = $SlashMarker
 
 	match last_direction:
@@ -148,9 +150,9 @@ func spawn_slash():
 		
 	get_parent().add_child(slash)
 
-
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.is_in_group("enemy"):
+	if body.is_in_group("enemy") and unlocked_weapons["Hero Sword"] == false:
+		body.knockback(get_facing_vector())
 		body.take_damage(weapon_damage)
 
 func start_attack():
@@ -195,13 +197,13 @@ func update_interact_transform():
 			interact.position = Vector2(14, 3)
 
 		"down":
-			sword.position = Vector2(0.5, 15)
+			interact.position = Vector2(0.5, 15)
 
 		"left":
-			sword.position = Vector2(-12, 3)
+			interact.position = Vector2(-12, 3)
 
 		"up":
-			sword.position = Vector2(0.5, -1)
+			interact.position = Vector2(0.5, -1)
 
 
 func _on_interact_body_entered(body: Node2D) -> void:

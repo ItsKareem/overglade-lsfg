@@ -6,8 +6,10 @@ extends CharacterBody2D
 @export var patrol_right = 4
 @export var patrol_down = 0
 @export var follow_duration: int = 2
+@export var knockbackPower := 600
 
 @onready var animations := $AnimatedSprite2D
+@onready var damage_particles := $DamageParticles
 
 var health: float = 3.0
 var startPosition
@@ -71,3 +73,12 @@ func take_damage(weapon_damage: float):
 	
 	if health <= 0.0:
 		queue_free()
+
+func knockback(direction: Vector2):
+	var material = damage_particles.process_material
+	material.direction =  Vector3(direction.x, direction.y, 0)
+	damage_particles.global_position = global_position
+	damage_particles.restart() 
+	
+	velocity = direction.normalized() * knockbackPower
+	move_and_slide()
