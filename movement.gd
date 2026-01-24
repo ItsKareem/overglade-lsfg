@@ -19,6 +19,11 @@ signal healthChanged
 @export var maxHealth := 3
 @export var knockbackPower := 600
 
+var unlocked_weapons := {
+	"Wooden Sword": true,
+	"Hero Sword": false
+}
+
 var canRestart = false
 var canInteract: Array[CollisionObject2D] = []
 var currentHealth := maxHealth
@@ -31,12 +36,16 @@ var last_direction := "down"
 const sword_slash_preload = preload("res://sword_slash.tscn")
 
 func _ready() -> void:
+#	position = Vector2(128, 88)
 	effects.play("RESET")
 	sword.visible = false
 	canRestart = false
+	sword.frame = 0
 
 func _physics_process(delta: float) -> void:
-
+	if unlocked_weapons["Hero Sword"] == true:
+		sword.frame = 1
+		weapon_damage = 2.0
 	if is_attacking or is_interacting:
 		velocity = Vector2.ZERO
 		move_and_slide()
@@ -242,3 +251,10 @@ func game_over():
 	await get_tree().create_timer(0.2).timeout
 
 	ui.visible = true
+
+
+func has_weapon(weapon_name: String) -> bool:
+	return unlocked_weapons.get(weapon_name, false)
+
+func unlock_weapon(weapon_name: String) -> void:
+	unlocked_weapons[weapon_name] = true

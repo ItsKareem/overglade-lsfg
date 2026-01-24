@@ -146,6 +146,10 @@ size = Vector2(10, 7)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rsufd"]
 
+[sub_resource type="Animation" id="Animation_tqhcu"]
+length = 0.2
+step = 0.2
+
 [sub_resource type="Animation" id="Animation_hdpbr"]
 resource_name = "take_damage"
 length = 0.2
@@ -162,10 +166,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
-
-[sub_resource type="Animation" id="Animation_tqhcu"]
-length = 0.2
-step = 0.2
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xk5tb"]
 _data = {
