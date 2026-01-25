@@ -15,7 +15,12 @@ func _ready() -> void:
 
 
 func _on_moving_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("enemy") and player.has_weapon("Hero Sword") and !hit_enemies.has(body):
-		hit_enemies.append(body)
-		body.knockback(player.get_facing_vector())
-		body.take_damage(1)
+	if player.has_weapon("Hero Sword"):
+		if body.is_in_group("enemy") and !hit_enemies.has(body):
+			hit_enemies.append(body)
+			if body.has_method("knockback"):
+				body.knockback(player.get_facing_vector())
+			if body.has_method("take_damage"):
+				body.take_damage(player.weapon_damage)
+		if body.has_method("destroy"):
+			body.destroy()

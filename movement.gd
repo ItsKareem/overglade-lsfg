@@ -45,7 +45,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if unlocked_weapons["Hero Sword"] == true:
 		sword.frame = 1
-		weapon_damage = 2.0
 	if is_attacking or is_interacting:
 		velocity = Vector2.ZERO
 		move_and_slide()
@@ -152,8 +151,12 @@ func spawn_slash():
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy") and unlocked_weapons["Hero Sword"] == false:
-		body.knockback(get_facing_vector())
-		body.take_damage(weapon_damage)
+		if body.has_method("knockback"):
+			body.knockback(get_facing_vector())
+		if body.has_method("take_damage"):
+			body.take_damage(weapon_damage)
+	if body.has_method("destroy"):
+		body.destroy()
 
 func start_attack():
 	canSlash = false
