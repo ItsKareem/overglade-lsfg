@@ -36,7 +36,8 @@ var last_direction := "down"
 const sword_slash_preload = preload("res://sword_slash.tscn")
 
 func _ready() -> void:
-#	position = Vector2(128, 88)
+	#position = Vector2(128, 88)
+	has_weapon("Hero Sword")
 	effects.play("RESET")
 	sword.visible = false
 	canRestart = false
@@ -91,9 +92,16 @@ func hurtByEnemy(area):
 		game_over()
 		effects.play("death")
 		return
+
 	healthChanged.emit(currentHealth)
 	isHurt = true
-	knockback(area.get_parent().velocity)
+
+	if area.get_parent() and area.get_parent().has_method("get_velocity"):
+		knockback(area.get_parent().velocity)
+	elif area.get_parent() and area.get_parent().get("direction"):
+		velocity = area.get_parent().direction.normalized() * knockbackPower
+		move_and_slide()
+
 	effects.play("hurtBlink")
 	hurtTimer.start()
 	await hurtTimer.timeout
