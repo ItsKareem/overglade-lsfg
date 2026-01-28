@@ -928,7 +928,6 @@ radius = 16.0
 z_index = 1
 y_sort_enabled = true
 position = Vector2(0, -9)
-collision_mask = 13
 script = ExtResource("1_i3pqv")
 sword_return_time = 0.1
 

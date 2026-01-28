@@ -19,8 +19,10 @@ func _on_moving_area_body_entered(body: Node2D) -> void:
 		if body.is_in_group("enemy") and !hit_enemies.has(body):
 			hit_enemies.append(body)
 			if body.has_method("knockback"):
-				body.knockback(player.get_facing_vector())
+				body.knockback(player.get_facing_vector(player.attack_direction))
 			if body.has_method("take_damage"):
 				body.take_damage(player.weapon_damage)
 		if body.has_method("destroy"):
 			body.destroy()
+		if body.has_method("redirect_to_boss"):
+			body.redirect_to_boss()

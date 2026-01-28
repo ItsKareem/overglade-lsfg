@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3 uid="uid://bwiyeb8emvbub"]
+
+[ext_resource type="Script" uid="uid://dc6cowui1ohtl" path="res://key_chest.gd" id="1_lok45"]
+[ext_resource type="Texture2D" uid="uid://c35kaovwsvkw3" path="res://KeyCollectable.png" id="2_16hm6"]
+[ext_resource type="Texture2D" uid="uid://bb8vm8bf0ps57" path="res://KeyChest.png" id="3_58b8i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l074r"]
+atlas = ExtResource("3_58b8i")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jm08l"]
+atlas = ExtResource("3_58b8i")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j6vhb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l074r")
+}],
+"loop": true,
+"name": &"closed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jm08l")
+}],
+"loop": true,
+"name": &"open",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fc3py"]
+size = Vector2(16, 10)
+
+[node name="KeyChest" type="StaticBody2D"]
+z_index = 1
+y_sort_enabled = true
+collision_layer = 9
+collision_mask = 0
+script = ExtResource("1_lok45")
+item = ExtResource("2_16hm6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_j6vhb")
+animation = &"closed"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_fc3py")
+
+[node name="StartMarker" type="Marker2D" parent="."]
+
+[node name="EndMarker" type="Marker2D" parent="."]
+position = Vector2(0, -16)

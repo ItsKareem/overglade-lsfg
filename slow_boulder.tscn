@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://bf78u6xrgq4by"]
+
+[ext_resource type="Script" uid="uid://c4n7d36jol3gr" path="res://slow_boulder.gd" id="1_maoib"]
+[ext_resource type="Texture2D" uid="uid://c1r6a5kuf60al" path="res://Boulder-Sheet.png" id="2_g3bty"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_maoib"]
+size = Vector2(11, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dgbyp"]
+size = Vector2(11, 9)
+
+[node name="SlowBoulder" type="CharacterBody2D"]
+z_index = 1
+collision_mask = 6
+script = ExtResource("1_maoib")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_g3bty")
+hframes = 2
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_maoib")
+
+[node name="hitbox" type="Area2D" parent="." groups=["projectiles", "slow_boulder"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_dgbyp")
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]

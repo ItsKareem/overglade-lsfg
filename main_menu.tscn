@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cu6qmu27cevi8"]
+[gd_scene load_steps=10 format=3 uid="uid://blcwb1c00tcxj"]
 
 [ext_resource type="Texture2D" uid="uid://47i1ho4wa1pj" path="res://images/MainMenu-Overglade.png" id="1_06t4h"]
 [ext_resource type="Script" uid="uid://b120p1emyg2wl" path="res://main_menu.gd" id="1_dy7ct"]

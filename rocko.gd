@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @export var patrol_speed = 20
 @export var follow_speed = 30
+@export var detect_player_radius = 30
 @export var limit = 0.5
 @export var patrol_right = 0
 @export var patrol_down = 3
@@ -9,12 +10,14 @@ extends CharacterBody2D
 @export var knockbackPower := 600
 @export var attack_cooldown := 1.5
 @export var projectile_scene:= preload("res://bullet.tscn")
+@export var attack_range := 120
+@export var follow := true
 
+@onready var detect_collision := $DetectPlayer/CollisionShape2D
 @onready var animations := $AnimatedSprite2D
 @onready var damage_particles := $DamageParticles
 
 var health: float = 6.0
-var attack_range := 120
 var startPosition
 var endPosition
 var moveDirection
@@ -24,7 +27,10 @@ var can_attack := true
 var current_direction := "down"
 
 func _ready() -> void:
-	add_to_group("projectiles")
+	target = null
+	var shape := detect_collision.shape as CircleShape2D
+	shape.radius = detect_player_radius
+	add_to_group("enemy")
 	startPosition = position
 	endPosition = startPosition + Vector2(patrol_right * 16, patrol_down * 16)
 
@@ -38,7 +44,7 @@ func updateVelocity():
 		velocity = Vector2.ZERO
 		return
 	
-	if !target:
+	if !target or !follow:
 		moveDirection = (endPosition - position)
 		if moveDirection.length() < limit:
 			changeDirection()
@@ -54,7 +60,7 @@ func updateAnimation():
 		else:
 			current_direction = "left"
 	else:
-		if moveDirection.y > 0:
+		if moveDirection.y >= 0:
 			current_direction = "down"
 		else:
 			current_direction = "up"

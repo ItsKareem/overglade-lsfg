@@ -44,15 +44,18 @@ radius = 3.0
 height = 6.0
 
 [node name="Bullet" type="CharacterBody2D"]
+z_index = 1
+collision_mask = 6
 script = ExtResource("1_v8qja")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_6ol1o")
-frame_progress = 0.453194
+frame_progress = 0.0342314
 
 [node name="hitbox" type="Area2D" parent="." groups=["projectiles"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
 shape = SubResource("CapsuleShape2D_gofb6")
 
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]

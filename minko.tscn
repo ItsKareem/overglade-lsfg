@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bell8utm1yxdb" path="res://images/Minko-Sheet.png" id="1_75d4f"]
 [ext_resource type="Script" uid="uid://c2xfw1c754kxp" path="res://minko.gd" id="1_hdpbr"]
-[ext_resource type="Texture2D" uid="uid://b65vc1xnf345t" path="res://Particle.png" id="3_tqhcu"]
+[ext_resource type="Texture2D" uid="uid://dixbonl2mct71" path="res://small_Particle.png" id="3_tqhcu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hdpbr"]
 atlas = ExtResource("1_75d4f")
@@ -124,7 +124,7 @@ gravity = Vector3(0, 0, 0)
 
 [node name="minko" type="CharacterBody2D"]
 collision_layer = 2
-collision_mask = 2
+collision_mask = 14
 script = ExtResource("1_hdpbr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

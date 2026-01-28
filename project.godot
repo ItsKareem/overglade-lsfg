@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="OVERGLADE LSFG"
-run/main_scene="uid://cu6qmu27cevi8"
+run/main_scene="uid://blcwb1c00tcxj"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -36,6 +36,9 @@ enemy=""
 challenge_1=""
 challenge_2=""
 projectiles=""
+challenge_3=""
+challenge_4=""
+slow_boulder=""
 
 [input]
 

@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://g45q0i0bduxh"]
+
+[ext_resource type="Script" uid="uid://cc0yxcct6415o" path="res://bullet.gd" id="1_dicgi"]
+[ext_resource type="Texture2D" uid="uid://c1r6a5kuf60al" path="res://Boulder-Sheet.png" id="2_dicgi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dgbyp"]
+size = Vector2(11, 9)
+
+[node name="Boulder" type="CharacterBody2D"]
+z_index = 1
+collision_mask = 6
+script = ExtResource("1_dicgi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_dicgi")
+hframes = 2
+
+[node name="hitbox" type="Area2D" parent="." groups=["projectiles"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_dgbyp")
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]

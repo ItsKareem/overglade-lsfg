@@ -8,6 +8,7 @@ const SCREEN_H := 176
 
 var last_room : Vector2
 var forced_limits := false
+var follow_player := false
 
 func update_camera_limits():
 	if forced_limits:
@@ -29,6 +30,7 @@ func update_camera_limits():
 	limit_bottom = bottom
 
 func _process(delta):
+
 	var current_room = Vector2(
 		floor(player.global_position.x / SCREEN_W),
 		floor(player.global_position.y / SCREEN_H)
@@ -36,8 +38,12 @@ func _process(delta):
 
 	if current_room != last_room:
 		last_room = current_room
-		update_camera_limits()
-		snap_to_room()
+		if !follow_player:
+			update_camera_limits()
+			snap_to_room()
+
+	if follow_player:
+		global_position = player.global_position
 
 func snap_to_room():
 	global_position = Vector2(
@@ -45,19 +51,27 @@ func snap_to_room():
 		limit_top + SCREEN_H / 2
 	)
 
+func _on_boss_room_camera_body_entered(body: Node2D) -> void:
+	if body != player:
+		return
 
-#@export var smoothingVar = 5.0
+	forced_limits = true
+	follow_player = true
 
-#var actual_cam_pos : Vector2
+	limit_left   = 1280
+	limit_top    = 176
+	limit_right  = 1792
+	limit_bottom = 352
 
-#func _process(delta: float) -> void:
-#	actual_cam_pos = actual_cam_pos.lerp($"../Player".global_position,delta * smoothingVar)
-#	var cam_subpixel_offset = actual_cam_pos.round() - actual_cam_pos
-#	get_parent().get_parent().get_parent().material.set_shader_parameter("cam_offset", cam_subpixel_offset)
-#	global_position = actual_cam_pos.round()
-#func _ready() -> void:
-#	var mapRect = tilemap.get_used_rect()
-#	var tileSize = tilemap.cell_quadrant_size
-#	var worldSizeInPixels = mapRect.size * tileSize
-#	limit_right = worldSizeInPixels.x -16
-#	limit_bottom = worldSizeInPixels.y -16
+
+
+func _on_boss_room_camera_body_exited(body: Node2D) -> void:
+	if body != player:
+		return
+
+	forced_limits = false
+	follow_player = false
+
+	last_room = Vector2(-1, -1)
+	update_camera_limits()
+	snap_to_room()

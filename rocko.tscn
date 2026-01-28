@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b7njjjfg1wq8m" path="res://rocko.gd" id="1_lix3w"]
 [ext_resource type="Texture2D" uid="uid://dot7s08u8r8c8" path="res://Rocko-Sheet.png" id="2_w6i7i"]
-[ext_resource type="Texture2D" uid="uid://b65vc1xnf345t" path="res://Particle.png" id="3_e5n7y"]
+[ext_resource type="Texture2D" uid="uid://dixbonl2mct71" path="res://small_Particle.png" id="3_lix3w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e5n7y"]
 atlas = ExtResource("2_w6i7i")
@@ -201,15 +201,17 @@ initial_velocity_max = 120.0
 gravity = Vector3(0, 0, 0)
 
 [node name="rocko" type="CharacterBody2D" groups=["enemy"]]
+z_index = 1
+y_sort_enabled = true
 collision_layer = 2
-collision_mask = 2
+collision_mask = 14
 script = ExtResource("1_lix3w")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 clip_children = 2
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_a5s6v")
-animation = &"attack_up"
+animation = &"walk_down"
 
 [node name="ColorRect" type="ColorRect" parent="AnimatedSprite2D"]
 self_modulate = Color(1, 1, 1, 0)
@@ -232,6 +234,8 @@ shape = SubResource("RectangleShape2D_tqhcu")
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectPlayer"]
+z_index = 1
+y_sort_enabled = true
 position = Vector2(0, -5)
 scale = Vector2(3, 3)
 shape = SubResource("CircleShape2D_rsufd")
@@ -245,7 +249,7 @@ libraries = {
 [node name="DamageParticles" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 10
-texture = ExtResource("3_e5n7y")
+texture = ExtResource("3_lix3w")
 lifetime = 0.4
 one_shot = true
 explosiveness = 1.0

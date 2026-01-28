@@ -1,0 +1,62 @@
+[gd_scene load_steps=10 format=3 uid="uid://kbtx4b6bm2hj"]
+
+[ext_resource type="Script" uid="uid://b120p1emyg2wl" path="res://main_menu.gd" id="1_66qyu"]
+[ext_resource type="Texture2D" uid="uid://bhhhl1w8q0kxh" path="res://Untitled_Artwork (6).png" id="2_66qyu"]
+[ext_resource type="Texture2D" uid="uid://dj60urg0xyost" path="res://images/GameLogo.PNG" id="3_hv5vf"]
+[ext_resource type="Texture2D" uid="uid://d04u5nmv7lyoa" path="res://images/StartButton.PNG" id="4_tg45c"]
+[ext_resource type="Texture2D" uid="uid://c5nvqii8fsur4" path="res://images/StartButton-Pressed.PNG" id="5_0je7l"]
+[ext_resource type="Texture2D" uid="uid://8fats02lwyrv" path="res://images/StartButton-Hover.PNG" id="6_tpfpb"]
+[ext_resource type="Texture2D" uid="uid://cqps8edq1kom2" path="res://images/QuitButton.PNG" id="7_3il8l"]
+[ext_resource type="Texture2D" uid="uid://ydlv11830u15" path="res://images/QuitButton-Pressed.PNG" id="8_0tgxd"]
+[ext_resource type="Texture2D" uid="uid://qpuk00wbr61o" path="res://images/QuitButton-Hover.PNG" id="9_1foy5"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -256.0
+offset_bottom = -176.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_66qyu")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 256.0
+offset_bottom = 176.0
+texture = ExtResource("2_66qyu")
+expand_mode = 1
+
+[node name="GameLogo" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1051.0
+offset_bottom = 789.0
+scale = Vector2(0.09, 0.09)
+texture = ExtResource("3_hv5vf")
+expand_mode = 1
+
+[node name="StartButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 115.0
+offset_right = 803.0
+offset_bottom = 372.0
+scale = Vector2(0.11, 0.11)
+texture_normal = ExtResource("4_tg45c")
+texture_pressed = ExtResource("5_0je7l")
+texture_hover = ExtResource("6_tpfpb")
+
+[node name="QuitButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 137.0
+offset_right = 849.0
+offset_bottom = 394.0
+scale = Vector2(0.11, 0.11)
+texture_normal = ExtResource("7_3il8l")
+texture_pressed = ExtResource("8_0tgxd")
+texture_hover = ExtResource("9_1foy5")
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]

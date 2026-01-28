@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name Player
 
 signal healthChanged
+signal key_changed(hasKey: bool)
 
 @onready var anim := $AnimatedSprite2D
 @onready var effects := $Effects
@@ -25,19 +26,20 @@ var unlocked_weapons := {
 }
 
 var canRestart = false
-var canInteract: Array[CollisionObject2D] = []
+var canInteract: Array[Node2D] = []
 var currentHealth := maxHealth
 var canSlash := true
 var is_interacting := false
 var is_attacking := false
 var isHurt := false
 var last_direction := "down"
+var attack_direction := "down"
+var hasKey = false
 
 const sword_slash_preload = preload("res://sword_slash.tscn")
 
 func _ready() -> void:
-	#position = Vector2(128, 88)
-	has_weapon("Hero Sword")
+	position = Vector2(128, 88)
 	effects.play("RESET")
 	sword.visible = false
 	canRestart = false
@@ -122,8 +124,8 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	else:
 		canSlash = true
 
-func get_facing_vector() -> Vector2:
-	match last_direction:
+func get_facing_vector(direction: String) -> Vector2:
+	match direction:
 		"up":
 			return Vector2.UP
 		"down":
@@ -160,7 +162,7 @@ func spawn_slash():
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy") and unlocked_weapons["Hero Sword"] == false:
 		if body.has_method("knockback"):
-			body.knockback(get_facing_vector())
+			body.knockback(get_facing_vector(attack_direction))
 		if body.has_method("take_damage"):
 			body.take_damage(weapon_damage)
 	if body.has_method("destroy"):
@@ -172,7 +174,8 @@ func start_attack():
 	velocity = Vector2.ZERO
 	update_sword_transform()
 	update_sword_draw_order()
-	anim.play("attack_" + last_direction)
+	attack_direction = last_direction
+	anim.play("attack_" + attack_direction)
 	spawn_slash()
 
 func update_sword_transform():
@@ -223,7 +226,7 @@ func _on_interact_body_entered(body: Node2D) -> void:
 
 
 func _on_interact_body_exited(body: Node2D) -> void:
-	if canInteract.has(body):
+	if is_instance_valid(body) and canInteract.has(body):
 		canInteract.erase(body)
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -271,3 +274,14 @@ func has_weapon(weapon_name: String) -> bool:
 
 func unlock_weapon(weapon_name: String) -> void:
 	unlocked_weapons[weapon_name] = true
+
+func acquire_key():
+	hasKey = true
+	emit_signal("key_changed", hasKey)
+
+func use_key():
+	if not hasKey:
+		return
+
+	hasKey = false
+	key_changed.emit(false)
